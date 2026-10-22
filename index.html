@@ -225,6 +225,62 @@ nav.links { gap: 18px; }
   #v-registro > *:nth-child(4), #v-inicio > *:nth-child(4) { animation-delay: .18s; }
   @keyframes rise { from { transform: translateY(8px); } to { transform: none; } }
 }
+/* ================= ESCRITORIO ================= */
+@media (min-width: 960px) {
+  body { font-size: 17px; background:
+    radial-gradient(70% 55% at 18% 0%, rgb(226 167 46 / .16), transparent 60%),
+    radial-gradient(50% 40% at 100% 100%, rgb(238 138 108 / .06), transparent 70%), var(--bg); }
+  .wrap { max-width: 1140px; padding-block: 56px 120px; padding-left: max(40px, env(safe-area-inset-left, 0px)); padding-right: max(40px, env(safe-area-inset-right, 0px)); }
+
+  /* registro: marca a la izquierda, formulario a la derecha */
+  #v-registro:not([hidden]) { display: grid !important; grid-template-columns: minmax(0, 1fr) 420px; grid-template-areas: "hero form" "perks form" ". skip"; column-gap: 72px; row-gap: 20px; align-items: start; padding-top: 0; }
+  #v-registro > header { grid-area: hero; }
+  #v-registro > .perks { grid-area: perks; }
+  #v-registro > form { grid-area: form; background: var(--surface); border: 1px solid var(--line); padding: 32px; gap: 18px; }
+  #v-registro > .skip { grid-area: skip; }
+
+  /* inicio: cartel fijo a la izquierda, accesos a la derecha */
+  #v-inicio:not([hidden]) { display: grid !important; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); grid-template-areas: "hero links" "info links" "bun links" "salir links"; column-gap: 72px; row-gap: 24px; align-items: start; }
+  #v-inicio > header { grid-area: hero; }
+  #v-inicio > nav { grid-area: links; position: sticky; top: 40px; padding-top: 8px; }
+  #v-inicio > .info { grid-area: info; padding-inline: 8px; }
+  #v-inicio > .bun { grid-area: bun; justify-self: start; margin-left: 8px; }
+  #v-inicio > #btn-salir { grid-area: salir; justify-self: start; }
+
+  .frame { padding: 64px 40px 52px; min-height: 380px; justify-content: center; }
+  .frame::before { inset: 8px; }
+  .logo { width: min(380px, 80%); }
+  .kicker { font-size: 12px; }
+  .reg h1 { font-size: 40px; }
+  .tag { font-size: 16px; }
+  .btn.primary { padding: 30px 28px 26px; }
+  .btn.primary .txt { font-size: 28px; }
+  .btn.primary .stars-big { font-size: 30px; }
+  .list .btn { padding: 22px 8px; font-size: 18px; transition: padding .15s ease, background .15s ease; }
+  .list .btn:hover { padding-left: 16px; background: rgb(226 167 46 / .05); }
+  .list .btn:hover .arrow { opacity: 1; color: var(--yellow); }
+  .btn.primary:hover { filter: brightness(1.06); }
+
+  /* carta: índice lateral fijo + platos en dos columnas */
+  #v-carta:not([hidden]) { display: grid !important; grid-template-columns: 220px minmax(0, 1fr); column-gap: 56px; row-gap: 24px; align-items: start; }
+  #v-carta > .top { grid-column: 1 / -1; }
+  #v-carta > .chips { grid-column: 1; grid-row: 2 / span 6; position: sticky; top: 32px; flex-direction: column; overflow: visible; margin: 0; padding: 0; gap: 2px; background: transparent; }
+  #v-carta > :not(.top):not(.chips) { grid-column: 2; }
+  .chip { border: 0; border-left: 2px solid var(--line); border-radius: 0; padding: 9px 14px; font-size: 14px; text-align: left; }
+  .chip:hover { color: var(--fg); border-left-color: var(--muted); }
+  .chip.on { background: transparent; color: var(--yellow); border-left-color: var(--yellow); }
+  section.cat { display: grid; grid-template-columns: 1fr 1fr; column-gap: 44px; scroll-margin-top: 32px; }
+  section.cat > .cat-head { grid-column: 1 / -1; margin-bottom: 4px; }
+  .cat-head h2 { font-size: 30px; }
+  #menu { gap: 48px !important; }
+  .item { padding: 16px 0; }
+
+  /* pedido: barra flotante abajo a la derecha y ventana centrada */
+  .bar { left: auto; right: 32px; bottom: 24px; width: 380px; padding: 0; background: none; }
+  .bar button { box-shadow: 0 12px 32px rgb(0 0 0 / .45); }
+  .sheet-bg { align-items: center; }
+  .sheet { border-radius: 6px; max-height: 86%; padding: 32px; }
+}
 </style>
 </head>
 <body>
@@ -485,7 +541,8 @@ try {
     if (!e.isIntersecting) return;
     chips.forEach(c => c.classList.toggle("on", c.dataset.jump === e.target.id));
     const on = chips.find(c => c.dataset.jump === e.target.id);
-    if (on) on.scrollIntoView({ inline: "center", block: "nearest" });
+    const bar = document.getElementById("chips");
+    if (on && bar.scrollWidth > bar.clientWidth + 4) bar.scrollTo({ left: on.offsetLeft - bar.clientWidth / 2 + on.offsetWidth / 2, behavior: "smooth" });
   }), { rootMargin: "-30% 0px -65% 0px" });
   document.querySelectorAll("section.cat").forEach(sec => io.observe(sec));
 } catch (_) {}
