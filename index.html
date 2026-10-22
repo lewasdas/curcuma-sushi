@@ -276,8 +276,7 @@ nav.links { gap: 18px; }
   .item { padding: 16px 0; }
 
   /* centrado: registro e inicio quedan en el medio de la pantalla */
-  html, body { height: 100%; }
-  .wrap { min-height: 100%; justify-content: center; }
+  .wrap { min-height: 100vh; justify-content: center; }
   #v-registro:not([hidden]), #v-inicio:not([hidden]) { align-items: center; align-content: center; max-width: 1040px; width: 100%; margin-inline: auto; }
   #v-registro:not([hidden]) { grid-template-areas: "hero form" "perks skip"; }
   #v-registro > .skip { align-self: start; justify-self: center; }
